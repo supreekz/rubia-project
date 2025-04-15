@@ -152,6 +152,39 @@
     }
   });
 
+    /**
+   * Vídeo com som: autoplay uma vez e botão de replay
+   */
+    window.addEventListener('load', function () {
+      const video = document.getElementById('homeVideo');
+      const replayButton = document.getElementById('replayButton');
+  
+      if (!video || !replayButton) return;
+  
+      // Tentativa de autoplay com som (pode falhar em alguns browsers)
+      video.autoplay = true;
+      video.muted = false;
+  
+      // Força o play (em alguns navegadores só vai funcionar com interação do usuário)
+      video.play().catch((err) => {
+        // Se não conseguir autoplay com som, pode logar ou ajustar a UX
+        console.warn("Autoplay com som bloqueado pelo navegador.", err);
+      });
+  
+      // Quando vídeo termina, mostra botão
+      video.addEventListener('ended', () => {
+        replayButton.style.display = 'block';
+      });
+  
+      // Clicou no botão -> esconde e dá play de novo
+      replayButton.addEventListener('click', () => {
+        video.currentTime = 0;
+        video.play();
+        replayButton.style.display = 'none';
+      });
+    });
+  
+
   /**
    * Navmenu Scrollspy
    */
